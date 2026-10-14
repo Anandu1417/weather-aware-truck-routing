@@ -39,3 +39,12 @@ def snow_level(inches_per_hour: float)->Risk:
     if inches_per_hour>=0.5:
         return Risk.MODERATE
     return Risk.LOW
+
+def wind_level_with_load(mph: float, load_lb: float)-> Risk:
+    if mph>=55:
+        return Risk.NO_TRAVEL
+    if mph>=45 and load_lb>30000:
+        return Risk.NO_TRAVEL
+    if mph>=35 and load_lb>40000:
+        return Risk.SEVERE
+    return wind_level(mph)
