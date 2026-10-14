@@ -1,6 +1,6 @@
 import pytest
 
-from trips.risk import Risk, wind_level, rain_level
+from trips.risk import Risk, wind_level, rain_level, snow_level
 
 @pytest.mark.parametrize(
     "mph, expected",
@@ -20,7 +20,6 @@ from trips.risk import Risk, wind_level, rain_level
 def test_wind_level(mph, expected):
     assert wind_level(mph) == expected
 
-
 @pytest.mark.parametrize(
     "inches_per_hour, expected",
     [(0, Risk.LOW),
@@ -35,6 +34,22 @@ def test_wind_level(mph, expected):
      ],
 )
 
-
 def test_rain_level(inches_per_hour, expected):
     assert rain_level(inches_per_hour) == expected
+
+@pytest.mark.parametrize(
+    "inches_per_hour, expected",
+    [(0, Risk.LOW),
+     (0.49, Risk.LOW),
+     (0.5, Risk.MODERATE),
+     (0.99, Risk.MODERATE),
+     (1, Risk.HIGH),
+     (1.99, Risk.HIGH),
+     (2, Risk.SEVERE),
+     (3, Risk.SEVERE),
+     (3.01, Risk.NO_TRAVEL)
+     ],
+)
+
+def test_snow_level(inches_per_hour, expected):
+   assert snow_level(inches_per_hour) == expected
